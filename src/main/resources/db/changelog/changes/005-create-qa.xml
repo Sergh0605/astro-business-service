@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="02.10.2025-create-questions-table" author="spuzakov">
+    <createTable tableName="questions" schemaName="business_sch">
+      <column name="id" type="UUID">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+
+      <column name="natal_chart_id" type="UUID">
+        <constraints nullable="false" foreignKeyName="fk_questions_natal_chart"
+          referencedTableName="natal_charts"
+          referencedColumnNames="id"/>
+      </column>
+
+      <column name="content" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <createIndex indexName="idx_questions_natal_chart_id"
+      schemaName="business_sch"
+      tableName="questions">
+      <column name="natal_chart_id"/>
+    </createIndex>
+  </changeSet>
+
+  <changeSet id="02.10.2025-create-answers-table" author="spuzakov">
+    <createTable tableName="answers" schemaName="business_sch">
+      <column name="id" type="UUID">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+
+      <column name="question_id" type="UUID">
+        <constraints nullable="false" foreignKeyName="fk_answers_question"
+          referencedTableName="questions"
+          referencedColumnNames="id"/>
+      </column>
+
+      <column name="content" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <createIndex indexName="idx_answers_question_id"
+      schemaName="business_sch"
+      tableName="answers">
+      <column name="question_id"/>
+    </createIndex>
+  </changeSet>
+
+
+</databaseChangeLog>

@@ -1,0 +1,93 @@
+app:
+  postgres:
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:123}
+    schema: ${DATABASE_SCHEMA:business_sch}
+    url: ${DATASOURCE_BASEURL:jdbc:postgresql://localhost:5433/uik_db?prepareThreshold=0}
+  shutdown-timeout: ${GRACEFUL_SHUTDOWN_TIMEOUT:10}
+  connection-timeout: ${SPRING_CONNECTION_TIMEOUT:30s}
+  telegram:
+    bot:
+      name: ${TELEGRAM_BOT_NAME:astrology_guide_ai_bot}
+      token: ${TELEGRAM_BOT_TOKEN:8204544619:AAG89FnmPtLRaql-AytGfLjs73aJkFOA19U}
+      webhook-base-url: ${TELEGRAM_BOT_WEBHOOK_URL:https://diphthongous-crustily-madeline.ngrok-free.dev}
+      webhook-path: /api/telegram/updates
+  geonames:
+    username: ${GEONAMES_USERNAME:astroaibot}
+    base-url: ${GEONAMES_BASE_URL:http://api.geonames.org}
+
+server:
+  shutdown: graceful
+  port: 8080
+  servlet:
+    context-path: /bot
+  tomcat:
+    connection-timeout: ${app.connection-timeout}
+
+spring:
+  main:
+    banner-mode: off
+  lifecycle:
+    timeout-per-shutdown-phase: ${app.shutdown-timeout}s
+
+  application:
+    name: astro-business-service
+    version: @project.version@
+
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+    default-schema: ${app.postgres.schema}
+    database-change-log-table: business_service_changelog
+    database-change-log-lock-table: business_service_changeloglock
+    liquibase-schema: public
+
+  jpa:
+    open-in-view: false
+    show-sql: false
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.default_schema: ${app.postgres.schema}
+      hibernate.jdbc.batch_size: 100
+      hibernate.order_inserts: true
+      hibernate.order_updates: true
+
+  datasource:
+    url: ${app.postgres.url}
+    username: ${app.postgres.username}
+    password: ${app.postgres.password}
+    hikari:
+      maxLifetime: 1800000
+      minimumIdle: 5
+      maximumPoolSize: 10
+      connectionTimeout: 30000
+      idleTimeout: 300000
+      leakDetectionThreshold: 10000
+      initializationFailTimeout: 10000
+      validationTimeout: 5000
+      connection-test-query: SELECT 1
+      keepalive-time: 30000
+
+springdoc:
+  packagesToScan: com.spuzakov.astro.astrobusinessservice.controller
+  pathsToMatch: /**
+  swagger-ui:
+    path: /swagger-ui.html
+
+management:
+  endpoints.web.exposure.include: info, health, metrics, prometheus
+  endpoint:
+    health:
+      show-details: ALWAYS
+      probes.enabled: true
+
+logging:
+  level:
+    com.spuzakov.astro: ${APP_LOG_LEVEL:DEBUG}
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.springframework.orm.jpa: DEBUG
+    org.springframework.transaction: DEBUG
+

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="02.10.2025-create-natal-charts-table" author="spuzakov">
+        <createTable tableName="natal_charts" schemaName="business_sch">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="order_id" type="UUID">
+                <constraints nullable="false" foreignKeyName="fk_natal_charts_order"
+                  referencedTableName="orders"
+                  referencedColumnNames="id"/>
+            </column>
+
+            <column name="chart_data" type="JSONB">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="interpretation" type="TEXT"/>
+
+            <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated_at" type="TIMESTAMPTZ" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex indexName="idx_natal_charts_order_id"
+          schemaName="business_sch"
+          tableName="natal_charts">
+            <column name="order_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
