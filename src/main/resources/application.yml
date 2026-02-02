@@ -1,20 +1,23 @@
 app:
   postgres:
-    username: ${DATABASE_USERNAME:postgres}
-    password: ${DATABASE_PASSWORD:123}
-    schema: ${DATABASE_SCHEMA:business_sch}
-    url: ${DATASOURCE_BASEURL:jdbc:postgresql://localhost:5433/uik_db?prepareThreshold=0}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    schema: ${DATABASE_SCHEMA}
+    url: ${DATASOURCE_BASEURL}
   shutdown-timeout: ${GRACEFUL_SHUTDOWN_TIMEOUT:10}
   connection-timeout: ${SPRING_CONNECTION_TIMEOUT:30s}
   telegram:
     bot:
-      name: ${TELEGRAM_BOT_NAME:astrology_guide_ai_bot}
-      token: ${TELEGRAM_BOT_TOKEN:8204544619:AAG89FnmPtLRaql-AytGfLjs73aJkFOA19U}
-      webhook-base-url: ${TELEGRAM_BOT_WEBHOOK_URL:https://diphthongous-crustily-madeline.ngrok-free.dev}
+      name: ${TELEGRAM_BOT_NAME}
+      token: ${TELEGRAM_BOT_TOKEN}
+      webhook-base-url: ${TELEGRAM_BOT_WEBHOOK_URL}
       webhook-path: /api/telegram/updates
   geonames:
-    username: ${GEONAMES_USERNAME:astroaibot}
-    base-url: ${GEONAMES_BASE_URL:http://api.geonames.org}
+    username: ${GEONAMES_USERNAME}
+    base-url: ${GEONAMES_BASE_URL}
+  nominatim:
+    base-url: ${NOMINATIM_BASE_URL}
+    user-agent-header-value: ${USER_AGENT_HEADER_VALUE}
 
 server:
   shutdown: graceful

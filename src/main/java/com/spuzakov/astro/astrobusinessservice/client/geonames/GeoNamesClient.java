@@ -1,5 +1,7 @@
-package com.spuzakov.astro.astrobusinessservice.client.geonames.dto;
+package com.spuzakov.astro.astrobusinessservice.client.geonames;
 
+import com.spuzakov.astro.astrobusinessservice.client.geonames.dto.GeoNamesChildrenResponse;
+import com.spuzakov.astro.astrobusinessservice.client.geonames.dto.GeoNamesTimezoneResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

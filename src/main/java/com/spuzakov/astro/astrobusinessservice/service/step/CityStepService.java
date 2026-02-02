@@ -1,11 +1,9 @@
 package com.spuzakov.astro.astrobusinessservice.service.step;
 
 import com.spuzakov.astro.astrobusinessservice.enums.UserStepEnum;
-import com.spuzakov.astro.astrobusinessservice.model.City;
 import com.spuzakov.astro.astrobusinessservice.service.CityService;
 import com.spuzakov.astro.astrobusinessservice.service.TelegramBotMessageSendService;
 import com.spuzakov.astro.astrobusinessservice.service.UserService;
-import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,12 +21,13 @@ public class CityStepService implements StepService {
   private static final String MESSAGE1 = "Город: %s.\n ";
 
   private static final String MESSAGE2 =
-      "Полные данные для расчета натальной карты:\n "
+      "Полные данные для расчета натальной карты: \n"
           + "Дата рождения: %s\n"
           + "Время рождения: %s\n"
           + "Город рождения: %s\n"
-          + "Если все правильно, нажмите кнопку 'Подтвердить' или введите 'да'. "
-          + "Если есть ошибка нажмите кнопку 'Сброс' и начните заново";
+          + "\n"
+          + "Если все правильно, нажмите кнопку 'Подтвердить' или введите 'да'. \n"
+          + "Если есть ошибка нажмите кнопку 'Сброс' и начните заново \n";
 
   private static final String ERROR_MESSAGE = "Город с названием %s не найден, введите другой город";
 
@@ -45,7 +44,7 @@ public class CityStepService implements StepService {
   @Override
   @Transactional
   public void processMessage(Long chatId, String text) {
-    var cityOptional = cityService.getByName(text);
+    var cityOptional = cityService.getByTextRequest(text);
     if (cityOptional.isEmpty()) {
       log.warn("City %s not found".formatted(text));
       telegramBotMessageSendService.sendMessage(chatId, ERROR_MESSAGE.formatted(text));

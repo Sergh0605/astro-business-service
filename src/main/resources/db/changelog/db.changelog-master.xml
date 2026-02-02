@@ -8,9 +8,9 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
 
     <include file="db/changelog/changes/000-create-schema.xml"/>
     <include file="db/changelog/changes/001-create-users.xml"/>
-    <include file="db/changelog/changes/002-create-locations.xml"/>
     <include file="/db/changelog/changes/003-create-orders.xml"/>
     <include file="/db/changelog/changes/004-create-natal-charts.xml"/>
     <include file="db/changelog/changes/005-create-qa.xml"/>
+    <include file="db/changelog/changes/006-create-geo-cache.xml"/>
 
 </databaseChangeLog>

@@ -2,7 +2,6 @@ package com.spuzakov.astro.astrobusinessservice.service;
 
 import com.spuzakov.astro.astrobusinessservice.enums.OrderStatusEnum;
 import com.spuzakov.astro.astrobusinessservice.enums.UserStepEnum;
-import com.spuzakov.astro.astrobusinessservice.mapper.CityMapper;
 import com.spuzakov.astro.astrobusinessservice.mapper.OrderMapper;
 import com.spuzakov.astro.astrobusinessservice.mapper.UserMapper;
 import com.spuzakov.astro.astrobusinessservice.model.City;
@@ -10,7 +9,6 @@ import com.spuzakov.astro.astrobusinessservice.model.OrderNested;
 import com.spuzakov.astro.astrobusinessservice.model.User;
 import com.spuzakov.astro.astrobusinessservice.persistence.entity.UserEntity;
 import com.spuzakov.astro.astrobusinessservice.persistence.repository.UserRepository;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
@@ -30,7 +28,6 @@ public class UserService {
   private final UserRepository userRepository;
   private final UserMapper userMapper;
   private final OrderMapper orderMapper;
-  private final CityMapper cityMapper;
 
   public User getUserByTelegramId(long telegramId) {
     var userEntity = getUserEntity(telegramId);
@@ -94,8 +91,10 @@ public class UserService {
   public void setCurrentOrderBirthCity(long telegramId, City place) {
     var userEntity = getUserEntity(telegramId);
     var orderEntity = userEntity.getCurrentOrder();
-    var cityEntity = cityMapper.mapToEntity(place);
-    orderEntity.setCity(cityEntity);
+    orderEntity.setCityFullName(place.getName());
+    orderEntity.setCityLat(place.getLatitude());
+    orderEntity.setCityLon(place.getLongitude());
+    orderEntity.setCityTimezone(place.getTimezone());
     userRepository.save(userEntity);
   }
 

@@ -16,16 +16,15 @@
                   references="business_sch.users(id)"/>
             </column>
 
-            <column name="city_id" type="UUID">
-                <constraints foreignKeyName="fk_orders_city"
-                  references="business_sch.cities(id)"/>
-            </column>
+            <column name="city_full_name" type="TEXT"/>
+            <column name="city_lat" type="DOUBLE PRECISION"/>
+            <column name="city_lon" type="DOUBLE PRECISION"/>
 
-            <column name="birth_date" type="DATE">
-            </column>
+            <column name="city_timezone" type="TEXT"/>
 
-            <column name="birth_time" type="TIME">
-            </column>
+            <column name="birth_date" type="DATE"/>
+
+            <column name="birth_time" type="TIME"/>
 
             <column name="status" type="VARCHAR(30)">
                 <constraints nullable="false"/>

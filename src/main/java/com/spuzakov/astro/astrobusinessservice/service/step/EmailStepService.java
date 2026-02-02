@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class EmailStepService implements StepService {
 
-  private static final String MESSAGE = "Перейдите по ссылке и проведите оплату./n "
+  private static final String MESSAGE = "Перейдите по ссылке и проведите оплату. /n"
       + "После оплаты натальная карта и ее интерпретация появится в данном чате";
 
   private final TelegramBotMessageSendService telegramBotMessageSendService;

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="29.01.2026-create-geocache-table" author="spuzakov">
+    <createTable tableName="geo_cache">
+      <column name="id" type="UUID">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+
+      <column name="query_text" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="normalized_query" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="display_name" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="lat" type="DOUBLE PRECISION">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="lon" type="DOUBLE PRECISION">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="timezone" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="now()">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <!-- generated geometry column -->
+    <sql>
+      ALTER TABLE geo_cache
+        ADD COLUMN geom geometry(Point, 4326)
+            GENERATED ALWAYS AS (
+                ST_SetSRID(ST_Point(lon, lat), 4326)
+            ) STORED;
+    </sql>
+
+    <createIndex
+      tableName="geo_cache"
+      indexName="ux_geo_cache_normalized_query"
+      unique="true">
+      <column name="normalized_query"/>
+    </createIndex>
+
+    <sql>
+      CREATE INDEX idx_geo_cache_geom
+        ON geo_cache
+        USING GIST (geom);
+    </sql>
+  </changeSet>
+
+</databaseChangeLog>

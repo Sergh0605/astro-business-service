@@ -11,6 +11,7 @@
 
     <changeSet id="02.10.2025-create-uuid-extension" author="spuzakov">
         <sql>CREATE EXTENSION IF NOT EXISTS "uuid-ossp";</sql>
+        <sql>CREATE EXTENSION IF NOT EXISTS "postgis"</sql>
     </changeSet>
 
 </databaseChangeLog>

@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  postgis:
+    image: postgis/postgis:16-3.5
+    container_name: postgis-tz
+    environment:
+      POSTGRES_DB: geo
+      POSTGRES_USER: geo
+      POSTGRES_PASSWORD: geo
+    ports:
+      - "55432:5432"
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U geo" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  tz-import:
+    image: ghcr.io/osgeo/gdal:alpine-normal-latest
+    container_name: tz-import
+    depends_on:
+      postgis:
+        condition: service_healthy
+    volumes:
+      - ./data:/data
+    command: >
+      sh -c "
+      echo 'Installing unzip...' &&
+      apk add --no-cache unzip curl &&
+      echo 'Downloading timezone polygons...' &&
+      curl -L -o /tmp/timezones.zip https://github.com/evansiroky/timezone-boundary-builder/releases/download/2025c/timezones-with-oceans.geojson.zip &&
+      echo 'Extracting...' &&
+      unzip -o /tmp/timezones.zip -d /tmp/ &&
+      echo 'Importing timezone polygons...' &&
+      ogr2ogr -f PostgreSQL
+      'PG:host=postgis dbname=geo user=geo password=geo'
+      /tmp/combined-with-oceans.json
+      -nln public.timezone_polygons
+      -lco GEOMETRY_NAME=geom
+      -nlt MULTIPOLYGON
+      -overwrite &&
+      echo 'Cleaning up...' &&
+      rm /tmp/timezones.zip /tmp/combined-with-oceans.json &&
+      echo 'Done!'
+      "

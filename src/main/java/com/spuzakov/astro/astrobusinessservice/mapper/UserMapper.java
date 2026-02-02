@@ -12,7 +12,7 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(
     componentModel = MappingConstants.ComponentModel.SPRING,
     unmappedTargetPolicy = ReportingPolicy.ERROR,
-    uses = {CityMapper.class, OrderMapper.class}
+    uses = {OrderMapper.class}
 )
 public interface UserMapper extends ObjectMapper<UserEntity, User> {
 

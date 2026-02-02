@@ -32,6 +32,8 @@
         <lombok.version>1.18.40</lombok.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <feign.version>4.3.0</feign.version>
+        <spatial.version>7.2.2.Final</spatial.version>
+        <jts-core.version>1.20.0</jts-core.version>
         <java.version>21</java.version>
     </properties>
     <dependencies>
@@ -69,6 +71,19 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-spatial</artifactId>
+            <version>${spatial.version}</version>
+            <type>pom</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts-core</artifactId>
+            <version>${jts-core.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

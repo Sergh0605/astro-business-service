@@ -9,6 +9,5 @@ public class City {
   private String name;
   private Double latitude;
   private Double longitude;
-  private Region region;
   private String timezone;
 }

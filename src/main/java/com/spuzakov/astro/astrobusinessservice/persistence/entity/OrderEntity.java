@@ -39,9 +39,17 @@ public class OrderEntity {
   @JoinColumn(name = "user_id", nullable = false) // связь с users
   private UserEntity user;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "city_id")
-  private CityEntity city;
+  @Column(name="city_full_name")
+  private String cityFullName;
+
+  @Column(name = "city_lat")
+  private Double cityLat;
+
+  @Column (name ="city_lon")
+  private Double cityLon;
+
+  @Column(name="city_timezone")
+  private String cityTimezone;
 
   @Column(name = "birth_date")
   private LocalDate birthDate;
