@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class OrderNested {
+public class Order {
   private UUID id;
   private City city;
   private LocalDate birthDate;
@@ -19,7 +19,7 @@ public class OrderNested {
   private Instant paidAt;
   private Instant createdAt;
   private Instant updatedAt;
-  private NatalChartNested natalChart;
+  private NatalChart natalChart;
 
 }
 

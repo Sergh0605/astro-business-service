@@ -21,13 +21,15 @@ public class CityStepService implements StepService {
   private static final String MESSAGE1 = "Город: %s.\n ";
 
   private static final String MESSAGE2 =
-      "Полные данные для расчета натальной карты: \n"
-          + "Дата рождения: %s\n"
-          + "Время рождения: %s\n"
-          + "Город рождения: %s\n"
-          + "\n"
-          + "Если все правильно, нажмите кнопку 'Подтвердить' или введите 'да'. \n"
-          + "Если есть ошибка нажмите кнопку 'Сброс' и начните заново \n";
+      """
+          Полные данные для расчета натальной карты:\s
+          Дата рождения: %s
+          Время рождения: %s
+          Город рождения: %s
+
+          Если все правильно, нажмите кнопку 'Подтвердить' или введите 'да'.\s
+          Если есть ошибка нажмите кнопку 'Сброс' и начните заново\s
+          """;
 
   private static final String ERROR_MESSAGE = "Город с названием %s не найден, введите другой город";
 
@@ -57,8 +59,8 @@ public class CityStepService implements StepService {
 
     var currentOrder = userService.getCurrentOrder(chatId);
 
-    telegramBotMessageSendService.sendMessage(chatId, MESSAGE1.formatted(city.getName()));
+    telegramBotMessageSendService.sendMessage(chatId, MESSAGE1.formatted(city.getFullName()));
     telegramBotMessageSendService.sendMessage(chatId,
-        MESSAGE2.formatted(currentOrder.getBirthDate(), currentOrder.getBirthTime(), city.getName()));
+        MESSAGE2.formatted(currentOrder.getBirthDate(), currentOrder.getBirthTime(), city.getFullName()));
   }
 }

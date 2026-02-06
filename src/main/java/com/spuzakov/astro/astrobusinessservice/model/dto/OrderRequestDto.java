@@ -1,4 +1,4 @@
-package com.spuzakov.astro.astrobusinessservice.model;
+package com.spuzakov.astro.astrobusinessservice.model.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

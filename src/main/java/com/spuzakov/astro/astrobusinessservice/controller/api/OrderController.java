@@ -1,10 +1,10 @@
 package com.spuzakov.astro.astrobusinessservice.controller.api;
 
-import com.spuzakov.astro.astrobusinessservice.model.AnswerDto;
-import com.spuzakov.astro.astrobusinessservice.model.NatalChartNested;
-import com.spuzakov.astro.astrobusinessservice.model.OrderRequestDto;
-import com.spuzakov.astro.astrobusinessservice.model.OrderNested;
-import com.spuzakov.astro.astrobusinessservice.model.QuestionDto;
+import com.spuzakov.astro.astrobusinessservice.model.NatalChart;
+import com.spuzakov.astro.astrobusinessservice.model.Order;
+import com.spuzakov.astro.astrobusinessservice.model.dto.AnswerDto;
+import com.spuzakov.astro.astrobusinessservice.model.dto.OrderRequestDto;
+import com.spuzakov.astro.astrobusinessservice.model.dto.QuestionDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.UUID;
@@ -21,15 +21,15 @@ public interface OrderController {
 
   @Operation(summary = "Создать новый заказ (регистрация пользователя в системе)")
   @PostMapping
-  ResponseEntity<OrderNested> createOrder(@RequestBody OrderRequestDto request);
+  ResponseEntity<Order> createOrder(@RequestBody OrderRequestDto request);
 
   @Operation(summary = "Получить заказ по ID")
   @GetMapping("/{orderId}")
-  ResponseEntity<OrderNested> getOrder(@PathVariable UUID orderId);
+  ResponseEntity<Order> getOrder(@PathVariable UUID orderId);
 
   @Operation(summary = "Запросить расчет натальной карты (требуется оплата)")
   @PostMapping("/{orderId}/calculate")
-  ResponseEntity<NatalChartNested> calculate(@PathVariable UUID orderId);
+  ResponseEntity<NatalChart> calculate(@PathVariable UUID orderId);
 
   @Operation(summary = "Отправить уточняющий вопрос по заказу")
   @PostMapping("/{orderId}/questions")

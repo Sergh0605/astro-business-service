@@ -1,6 +1,6 @@
 package com.spuzakov.astro.astrobusinessservice.mapper;
 
-import com.spuzakov.astro.astrobusinessservice.model.OrderNested;
+import com.spuzakov.astro.astrobusinessservice.model.Order;
 import com.spuzakov.astro.astrobusinessservice.persistence.entity.OrderEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,22 +13,14 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(
     componentModel = MappingConstants.ComponentModel.SPRING,
     unmappedTargetPolicy = ReportingPolicy.ERROR,
-    uses = {NatalChartMapper.class}
+    uses = {NatalChartMapper.class, CityMapper.class}
 )
-public interface OrderMapper extends ObjectMapper<OrderEntity, OrderNested> {
+public interface OrderMapper extends ObjectMapper<OrderEntity, Order> {
   @Override
   @Mapping(target = "user", ignore = true)
-  @Mapping(target = "cityFullName", source = "city.name")
-  @Mapping(target = "cityLat", source = "city.latitude")
-  @Mapping(target = "cityLon", source = "city.longitude")
-  @Mapping(target = "cityTimezone", source = "city.timezone")
-  OrderEntity mapToEntity(OrderNested orderNested);
+  OrderEntity mapToEntity(Order order);
 
 
   @Override
-  @Mapping(source = "cityFullName", target = "city.name")
-  @Mapping(source = "cityLat", target = "city.latitude")
-  @Mapping(source = "cityLon", target = "city.longitude")
-  @Mapping(source = "cityTimezone", target = "city.timezone")
-  OrderNested mapToDto(OrderEntity source);
+  Order mapToDto(OrderEntity source);
 }

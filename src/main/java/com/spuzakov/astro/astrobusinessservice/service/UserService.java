@@ -2,10 +2,11 @@ package com.spuzakov.astro.astrobusinessservice.service;
 
 import com.spuzakov.astro.astrobusinessservice.enums.OrderStatusEnum;
 import com.spuzakov.astro.astrobusinessservice.enums.UserStepEnum;
+import com.spuzakov.astro.astrobusinessservice.mapper.CityMapper;
 import com.spuzakov.astro.astrobusinessservice.mapper.OrderMapper;
 import com.spuzakov.astro.astrobusinessservice.mapper.UserMapper;
 import com.spuzakov.astro.astrobusinessservice.model.City;
-import com.spuzakov.astro.astrobusinessservice.model.OrderNested;
+import com.spuzakov.astro.astrobusinessservice.model.Order;
 import com.spuzakov.astro.astrobusinessservice.model.User;
 import com.spuzakov.astro.astrobusinessservice.persistence.entity.UserEntity;
 import com.spuzakov.astro.astrobusinessservice.persistence.repository.UserRepository;
@@ -28,6 +29,7 @@ public class UserService {
   private final UserRepository userRepository;
   private final UserMapper userMapper;
   private final OrderMapper orderMapper;
+  private final CityMapper cityMapper;
 
   public User getUserByTelegramId(long telegramId) {
     var userEntity = getUserEntity(telegramId);
@@ -61,15 +63,15 @@ public class UserService {
         .isPresent();
   }
 
-  public void addOrderAndSetCurrent(long telegramId, OrderNested orderNested) {
+  public void addOrderAndSetCurrent(long telegramId, Order order) {
     var userEntity = getUserEntity(telegramId);
-    var orderEntity = orderMapper.mapToEntity(orderNested);
+    var orderEntity = orderMapper.mapToEntity(order);
     userEntity.addOrder(orderEntity);
     userEntity.setCurrentOrder(orderEntity);
     userRepository.save(userEntity);
   }
 
-  public OrderNested getCurrentOrder(long telegramId) {
+  public Order getCurrentOrder(long telegramId) {
     var userEntity = getUserEntity(telegramId);
     return orderMapper.mapToDto(userEntity.getCurrentOrder());
   }
@@ -91,10 +93,8 @@ public class UserService {
   public void setCurrentOrderBirthCity(long telegramId, City place) {
     var userEntity = getUserEntity(telegramId);
     var orderEntity = userEntity.getCurrentOrder();
-    orderEntity.setCityFullName(place.getName());
-    orderEntity.setCityLat(place.getLatitude());
-    orderEntity.setCityLon(place.getLongitude());
-    orderEntity.setCityTimezone(place.getTimezone());
+    var cityInfo = cityMapper.toEntity(place);
+    orderEntity.setCity(cityInfo);
     userRepository.save(userEntity);
   }
 

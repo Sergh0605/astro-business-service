@@ -1,7 +1,6 @@
 package com.spuzakov.astro.astrobusinessservice.model;
 
 import com.spuzakov.astro.astrobusinessservice.enums.UserStepEnum;
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +18,6 @@ public class User {
   private OffsetDateTime registeredAt;
   private OffsetDateTime lastInteractionAt;
   private UserStepEnum step;
-  private OrderNested currentOrder;
-  private List<OrderNested> orders;
+  private Order currentOrder;
+  private List<Order> orders;
 }

@@ -5,7 +5,7 @@ import java.util.UUID;
 import lombok.Data;
 
 @Data
-public class NatalChartNested {
+public class NatalChart {
   private UUID id;
 
   /**

@@ -1,25 +1,23 @@
 package com.spuzakov.astro.astrobusinessservice.mapper;
 
 import com.spuzakov.astro.astrobusinessservice.model.City;
-import com.spuzakov.astro.astrobusinessservice.persistence.entity.GeoCacheEntity;
+import com.spuzakov.astro.astrobusinessservice.persistence.entity.CityInfo;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 
 /**
  * @author Sergey Puzakov {@literal <spuzakov@fil-it.ru>}
  */
+
 @Mapper(
     componentModel = MappingConstants.ComponentModel.SPRING,
     unmappedTargetPolicy = ReportingPolicy.ERROR
 )
-public interface GeoCacheMapper {
-  @Mapping(source = "displayName", target = "fullName")
-  @Mapping(source = "lat", target = "latitude")
-  @Mapping(source = "lon", target = "longitude")
-  @Mapping(source = "timezone", target = "timezone")
-  City mapToDto(GeoCacheEntity source);
+public interface CityMapper {
 
+  City mapToModel(CityInfo entity);
+
+  CityInfo toEntity(City model);
 
 }

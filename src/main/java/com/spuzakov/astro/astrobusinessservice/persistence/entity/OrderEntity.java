@@ -3,6 +3,7 @@ package com.spuzakov.astro.astrobusinessservice.persistence.entity;
 import com.spuzakov.astro.astrobusinessservice.enums.OrderStatusEnum;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -39,17 +40,8 @@ public class OrderEntity {
   @JoinColumn(name = "user_id", nullable = false) // связь с users
   private UserEntity user;
 
-  @Column(name="city_full_name")
-  private String cityFullName;
-
-  @Column(name = "city_lat")
-  private Double cityLat;
-
-  @Column (name ="city_lon")
-  private Double cityLon;
-
-  @Column(name="city_timezone")
-  private String cityTimezone;
+  @Embedded
+  private CityInfo city;
 
   @Column(name = "birth_date")
   private LocalDate birthDate;

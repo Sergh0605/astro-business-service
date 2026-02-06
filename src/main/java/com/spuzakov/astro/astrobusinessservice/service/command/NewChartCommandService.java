@@ -3,7 +3,7 @@ package com.spuzakov.astro.astrobusinessservice.service.command;
 import com.spuzakov.astro.astrobusinessservice.enums.OrderStatusEnum;
 import com.spuzakov.astro.astrobusinessservice.enums.TelegramCommandEnum;
 import com.spuzakov.astro.astrobusinessservice.enums.UserStepEnum;
-import com.spuzakov.astro.astrobusinessservice.model.OrderNested;
+import com.spuzakov.astro.astrobusinessservice.model.Order;
 import com.spuzakov.astro.astrobusinessservice.service.TelegramBotMessageSendService;
 import com.spuzakov.astro.astrobusinessservice.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -37,8 +37,8 @@ public class NewChartCommandService implements CommandService {
     telegramBotMessageSendService.sendMessage(chatId, MESSAGE2);
   }
 
-  private OrderNested getNewOrder() {
-    return OrderNested.builder()
+  private Order getNewOrder() {
+    return Order.builder()
         .status(OrderStatusEnum.NEW)
         .build();
   }
