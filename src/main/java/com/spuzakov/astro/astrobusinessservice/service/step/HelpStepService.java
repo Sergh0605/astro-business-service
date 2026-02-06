@@ -1,9 +1,7 @@
 package com.spuzakov.astro.astrobusinessservice.service.step;
 
 import com.spuzakov.astro.astrobusinessservice.enums.UserStepEnum;
-import com.spuzakov.astro.astrobusinessservice.service.TelegramBotMessageSendService;
-import com.spuzakov.astro.astrobusinessservice.service.UserService;
-import lombok.RequiredArgsConstructor;
+import com.spuzakov.astro.astrobusinessservice.enums.UserStepTrigger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class HelpStepService implements StepService {
 
   @Override
@@ -24,7 +21,8 @@ public class HelpStepService implements StepService {
 
   @Override
   @Transactional
-  public void processMessage(Long chatId, String text) {
+  public StepProcessingResult processMessage(Long chatId, String text) {
     log.info("User {} send question: {}", chatId, text);
+    return StepProcessingResult.success(UserStepTrigger.NEXT);
   }
 }

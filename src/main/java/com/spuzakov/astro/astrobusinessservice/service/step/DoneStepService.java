@@ -1,7 +1,6 @@
 package com.spuzakov.astro.astrobusinessservice.service.step;
 
 import com.spuzakov.astro.astrobusinessservice.enums.UserStepEnum;
-import com.spuzakov.astro.astrobusinessservice.enums.UserStepTrigger;
 import com.spuzakov.astro.astrobusinessservice.service.TelegramBotMessageSendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,23 +12,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class EmailStepService implements StepService {
+public class DoneStepService implements StepService {
 
-  private static final String MESSAGE = "Перейдите по ссылке и проведите оплату. /n"
-      + "После оплаты натальная карта и ее интерпретация появится в данном чате";
+  private static final String MESSAGE =
+      "Лимит вопросов исчерпан. Создайте новый заказ или воспользуйтесь командами /start, /help, /myorders.";
 
   private final TelegramBotMessageSendService telegramBotMessageSendService;
 
-
   @Override
   public UserStepEnum getSupportedStep() {
-    return UserStepEnum.WAITING_FOR_PAYMENT_EMAIL;
+    return UserStepEnum.DONE;
   }
 
   @Override
   @Transactional
   public StepProcessingResult processMessage(Long chatId, String text) {
     telegramBotMessageSendService.sendMessage(chatId, MESSAGE);
-    return StepProcessingResult.success(UserStepTrigger.NEXT);
+    return StepProcessingResult.noTransition();
   }
 }

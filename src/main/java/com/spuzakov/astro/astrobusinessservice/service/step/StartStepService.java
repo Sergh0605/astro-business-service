@@ -2,6 +2,7 @@ package com.spuzakov.astro.astrobusinessservice.service.step;
 
 import com.spuzakov.astro.astrobusinessservice.enums.TelegramCommandEnum;
 import com.spuzakov.astro.astrobusinessservice.enums.UserStepEnum;
+import com.spuzakov.astro.astrobusinessservice.enums.UserStepTrigger;
 import com.spuzakov.astro.astrobusinessservice.service.TelegramBotMessageSendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,8 @@ public class StartStepService implements StepService {
   }
 
   @Override
-  public void processMessage(Long chatId, String text) {
+  public StepProcessingResult processMessage(Long chatId, String text) {
     telegramBotMessageSendService.sendMessage(chatId, MESSAGE);
+    return StepProcessingResult.success(UserStepTrigger.NEXT);
   }
 }
