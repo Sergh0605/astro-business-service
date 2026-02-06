@@ -9,6 +9,6 @@ import com.spuzakov.astro.astrobusinessservice.enums.UserStepEnum;
 public interface StepService {
   UserStepEnum getSupportedStep();
 
-  void processMessage(Long chatId, String text);
+  StepProcessingResult processMessage(Long chatId, String text);
 
 }

@@ -2,6 +2,7 @@ package com.spuzakov.astro.astrobusinessservice.service.step;
 
 import com.spuzakov.astro.astrobusinessservice.enums.OrderStatusEnum;
 import com.spuzakov.astro.astrobusinessservice.enums.UserStepEnum;
+import com.spuzakov.astro.astrobusinessservice.enums.UserStepTrigger;
 import com.spuzakov.astro.astrobusinessservice.service.TelegramBotMessageSendService;
 import com.spuzakov.astro.astrobusinessservice.service.UserService;
 import com.spuzakov.astro.astrobusinessservice.service.command.StartCommandService;
@@ -34,15 +35,17 @@ public class ApproveStepService implements StepService {
 
   @Override
   @Transactional
-  public void processMessage(Long chatId, String text) {
+  public StepProcessingResult processMessage(Long chatId, String text) {
     if (text.toUpperCase(Locale.ROOT).equals(APPROVE_MESSAGE)) {
-      userService.setUserStep(chatId, UserStepEnum.WAITING_FOR_PAYMENT_EMAIL);
       userService.setCurrentOrderStatus(chatId, OrderStatusEnum.WAITING_FOR_PAYMENT);
       telegramBotMessageSendService.sendMessage(chatId, MESSAGE);
+      return StepProcessingResult.success(UserStepTrigger.APPROVE);
     } else if (text.toUpperCase(Locale.ROOT).equals(DECLINE_MESSAGE)) {
       userService.setCurrentOrderStatus(chatId, OrderStatusEnum.CANCELLED);
       startCommandService.processCommand(chatId);
+      return StepProcessingResult.success(UserStepTrigger.DECLINE);
     }
 
+    return StepProcessingResult.failure();
   }
 }

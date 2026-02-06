@@ -1,6 +1,7 @@
 package com.spuzakov.astro.astrobusinessservice.service.step;
 
 import com.spuzakov.astro.astrobusinessservice.enums.UserStepEnum;
+import com.spuzakov.astro.astrobusinessservice.enums.UserStepTrigger;
 import com.spuzakov.astro.astrobusinessservice.service.CityService;
 import com.spuzakov.astro.astrobusinessservice.service.TelegramBotMessageSendService;
 import com.spuzakov.astro.astrobusinessservice.service.UserService;
@@ -45,16 +46,15 @@ public class CityStepService implements StepService {
 
   @Override
   @Transactional
-  public void processMessage(Long chatId, String text) {
+  public StepProcessingResult processMessage(Long chatId, String text) {
     var cityOptional = cityService.getByTextRequest(text);
     if (cityOptional.isEmpty()) {
       log.warn("City %s not found".formatted(text));
       telegramBotMessageSendService.sendMessage(chatId, ERROR_MESSAGE.formatted(text));
-      return;
+      return StepProcessingResult.failure();
     }
 
     var city = cityOptional.get();
-    userService.setUserStep(chatId, UserStepEnum.WAITING_FOR_APPROVE);
     userService.setCurrentOrderBirthCity(chatId, city);
 
     var currentOrder = userService.getCurrentOrder(chatId);
@@ -62,5 +62,6 @@ public class CityStepService implements StepService {
     telegramBotMessageSendService.sendMessage(chatId, MESSAGE1.formatted(city.getFullName()));
     telegramBotMessageSendService.sendMessage(chatId,
         MESSAGE2.formatted(currentOrder.getBirthDate(), currentOrder.getBirthTime(), city.getFullName()));
+    return StepProcessingResult.success(UserStepTrigger.NEXT);
   }
 }

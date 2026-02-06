@@ -1,9 +1,9 @@
 package com.spuzakov.astro.astrobusinessservice.service.step;
 
 import com.spuzakov.astro.astrobusinessservice.enums.UserStepEnum;
+import com.spuzakov.astro.astrobusinessservice.enums.UserStepTrigger;
 import com.spuzakov.astro.astrobusinessservice.service.TelegramBotMessageSendService;
 import com.spuzakov.astro.astrobusinessservice.service.UserService;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
@@ -35,18 +35,18 @@ public class BirthTimeStepService implements StepService {
 
   @Override
   @Transactional
-  public void processMessage(Long chatId, String text) {
+  public StepProcessingResult processMessage(Long chatId, String text) {
     LocalTime birthTime;
     try {
       birthTime = LocalTime.parse(text, DATE_TIME_FORMATTER);
     } catch (Exception e) {
       log.warn("Wrong time format: %s".formatted(e.getMessage()));
       telegramBotMessageSendService.sendMessage(chatId, ERROR_MESSAGE);
-      return;
+      return StepProcessingResult.failure();
     }
 
-    userService.setUserStep(chatId, UserStepEnum.WAITING_FOR_CITY);
     userService.setCurrentOrderBirthTime(chatId, birthTime);
     telegramBotMessageSendService.sendMessage(chatId, MESSAGE.formatted(birthTime.format(DATE_TIME_FORMATTER)));
+    return StepProcessingResult.success(UserStepTrigger.NEXT);
   }
 }
